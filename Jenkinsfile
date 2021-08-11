@@ -5,8 +5,7 @@ pipeline {
             steps {
                 // checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/RevanthTiruveedhi/PythonFlaskApp.git']]])
                 //git branch: 'main', url: 'https://github.com/RevanthTiruveedhi/PythonFlaskApp.git'  
-                sh 'python -m py_compile main.py'
-                sh 'sudo cp -f /var/lib/jenkins/workspace/Flaskapp/main.py /var/www/flaskapp/flaskapp/'
+                sh 'python -m py_compile main.py'                
             }
         }
         stage('Test') { 
@@ -17,7 +16,8 @@ pipeline {
         }
         stage('Deploy') { 
             steps {
-                echo 'Deploy'
+                sh 'sudo cp -f /var/lib/jenkins/workspace/Flaskapp/main.py /var/www/flaskapp/flaskapp/'
+                sh 'sudo systemctl restart apache2'
                 //sh 'python setup.py bdist_wheel -d /etc/html/PythonApp/'
                 //sh 'pip install Python_flaskapp-1.0.0-py3-none-any.whl'
             }
